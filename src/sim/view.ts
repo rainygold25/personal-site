@@ -103,7 +103,7 @@ export function mountSandbox(): void {
     $('s-ticks').textContent = String(sim.stats.ticks);
     $('s-dist').textContent = `${Math.round(sim.stats.distance)} cm`;
     $('s-sent').textContent = String(sim.link.stats.sent);
-    $('s-supp').textContent = String(sim.link.stats.suppressed);
+    $('s-suppressed').textContent = String(sim.link.stats.suppressed);
     $('s-phantom').textContent = String(sim.stats.phantomReactions);
     $('s-bumps').textContent = String(sim.stats.bumps);
     $('serial-log').textContent = sim.link.frames.slice(-8).join('');

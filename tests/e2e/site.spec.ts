@@ -87,7 +87,7 @@ test.describe('WinnieWheels sandbox', () => {
     await page.getByTestId('dedupe').uncheck();
     for (let i = 0; i < 10; i++) await page.getByTestId('step').click();
     await expect(stat(page, 's-sent')).toHaveText('10');
-    await expect(stat(page, 's-supp')).toHaveText('0');
+    await expect(stat(page, 's-suppressed')).toHaveText('0');
   });
 
   test('clicking the arena adds and removes a box; reset keeps the layout', async ({ page }) => {

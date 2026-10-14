@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/rainygold25/personal-site/actions/workflows/ci.yml/badge.svg)](https://github.com/rainygold25/personal-site/actions/workflows/ci.yml)
 
-**Live site:** _add the Vercel URL here after the first deploy_
+**Live site:** https://ranya-prasad.vercel.app
 
 My personal website for the NOBE Fall 2026 capstone. It has two interactive features:
 
