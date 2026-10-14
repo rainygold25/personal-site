@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ranya Prasad</title>
+    <meta
+      name="description"
+      content="Ranya Rajesh Prasad: electrical engineering student at Illinois. Drive the WinnieWheels robot in the browser and see her work through a software, embedded or data lens."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Ranya Prasad, home">RP</a>
+      <nav aria-label="Sections">
+        <a href="#sandbox">Robot sandbox</a>
+        <a href="#work">Work</a>
+        <a href="#recognition">Recognition</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="name">
+        <div class="hero-text">
+          <p class="eyebrow">
+            Electrical Engineering · University of Illinois Urbana-Champaign · Class of 2029
+          </p>
+          <h1 id="name">Ranya Rajesh Prasad</h1>
+          <p class="headline" id="headline" aria-live="polite"></p>
+
+          <div class="lens" role="group" aria-labelledby="lens-label">
+            <span id="lens-label" class="lens-label">View my work as</span>
+            <div class="lens-buttons" id="lens-buttons"></div>
+          </div>
+
+          <ul class="skills" id="skills" aria-label="Key skills"></ul>
+
+          <div class="cta">
+            <a class="button primary" id="resume-link" href="#" download>Download resume</a>
+            <a class="button" href="#sandbox">Drive the robot</a>
+          </div>
+        </div>
+        <img
+          class="portrait"
+          src="/ranya.jpg"
+          width="480"
+          height="640"
+          alt="Portrait of Ranya Prasad"
+          fetchpriority="high"
+        />
+      </section>
+
+      <section id="sandbox" class="sandbox" aria-labelledby="sandbox-title">
+        <div class="section-head">
+          <p class="eyebrow">Interactive · WinnieWheels</p>
+          <h2 id="sandbox-title">Drive my robot’s brain</h2>
+          <p class="lede">
+            This is the obstacle-avoidance logic I wrote as Software Chair for WinnieWheels, ported to
+            TypeScript and wired to a simulated arena. Turn up the sensor noise, switch off the fixes I
+            shipped, unplug a sensor, and watch what the robot does. Click the arena to add or remove boxes.
+          </p>
+        </div>
+
+        <div class="sim">
+          <div class="arena-wrap">
+            <canvas
+              id="arena"
+              width="900"
+              height="600"
+              role="img"
+              aria-label="Top-down view of the arena: the robot, its two sensor beams, and box obstacles."
+              data-testid="arena"
+            ></canvas>
+            <p class="arena-hint">Click or tap the arena to add or remove a box.</p>
+          </div>
+
+          <div class="panel">
+            <div class="controls" role="group" aria-label="Simulation controls">
+              <button type="button" class="button primary" id="run" data-testid="run">Run</button>
+              <button type="button" class="button" id="step" data-testid="step">Step</button>
+              <button type="button" class="button" id="reset" data-testid="reset">Reset</button>
+            </div>
+
+            <fieldset>
+              <legend>Conditions</legend>
+              <label class="slider">
+                <span>Sensor noise <output id="noise-out" for="noise">0%</output></span>
+                <input type="range" id="noise" min="0" max="30" step="1" value="0" data-testid="noise" />
+              </label>
+              <label class="check">
+                <input type="checkbox" id="fault-left" data-testid="fault-left" /> Unplug left sensor
+              </label>
+              <label class="check">
+                <input type="checkbox" id="fault-right" data-testid="fault-right" /> Unplug right sensor
+              </label>
+              <div class="controls">
+                <button type="button" class="button small" id="add-box">Add random box</button>
+                <button type="button" class="button small" id="clear-boxes">Clear boxes</button>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Fixes I shipped</legend>
+              <label class="check">
+                <input type="checkbox" id="filter" checked data-testid="filter" />
+                <span>Three-sample validity filter <small>stops phantom braking</small></span>
+              </label>
+              <label class="check">
+                <input type="checkbox" id="dedupe" checked data-testid="dedupe" />
+                <span>Command dedupe + throttle <small>stops serial-link saturation</small></span>
+              </label>
+            </fieldset>
+
+            <dl class="readout">
+              <div>
+                <dt>Left</dt>
+                <dd id="r-left" data-testid="r-left">–</dd>
+              </div>
+              <div>
+                <dt>Right</dt>
+                <dd id="r-right" data-testid="r-right">–</dd>
+              </div>
+              <div class="wide">
+                <dt>Command</dt>
+                <dd id="r-cmd" data-testid="r-cmd">STOP</dd>
+              </div>
+              <div class="wide">
+                <dt>Why</dt>
+                <dd id="r-why" data-testid="r-why">waiting to start</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="telemetry">
+          <dl class="stats">
+            <div>
+              <dt>Ticks</dt>
+              <dd id="s-ticks" data-testid="s-ticks">0</dd>
+            </div>
+            <div>
+              <dt>Distance</dt>
+              <dd id="s-dist" data-testid="s-dist">0 cm</dd>
+            </div>
+            <div>
+              <dt>Serial frames sent</dt>
+              <dd id="s-sent" data-testid="s-sent">0</dd>
+            </div>
+            <div>
+              <dt>Suppressed</dt>
+              <dd id="s-supp" data-testid="s-supp">0</dd>
+            </div>
+            <div>
+              <dt>Phantom reactions</dt>
+              <dd id="s-phantom" data-testid="s-phantom">0</dd>
+            </div>
+            <div>
+              <dt>Bumps</dt>
+              <dd id="s-bumps" data-testid="s-bumps">0</dd>
+            </div>
+          </dl>
+          <div class="serial">
+            <h3>Serial link <small>newline-delimited JSON, host → firmware</small></h3>
+            <pre
+              id="serial-log"
+              data-testid="serial-log"
+              tabindex="0"
+              role="log"
+              aria-live="off"
+              aria-label="Serial frames"
+            ></pre>
+          </div>
+        </div>
+        <p class="sr-only" id="sim-status" aria-live="polite" data-testid="sim-status"></p>
+      </section>
+
+      <section id="work" class="work" aria-labelledby="work-title">
+        <div class="section-head">
+          <p class="eyebrow" id="work-lens-label">All work</p>
+          <h2 id="work-title">Selected work</h2>
+        </div>
+        <ul class="projects" id="projects" data-testid="projects"></ul>
+        <p class="empty" id="projects-empty" hidden>
+          Nothing here for this view yet.
+          <button type="button" class="link" id="show-all">Show all work</button>
+        </p>
+      </section>
+
+      <section id="recognition" class="recognition" aria-labelledby="rec-title">
+        <div class="section-head">
+          <p class="eyebrow">Recognition</p>
+          <h2 id="rec-title">Published, presented, placed</h2>
+        </div>
+        <ul class="rec-list">
+          <li>
+            <strong>Corresponding author</strong>, “SkinSight: An App Leveraging Neural Networks for Skin
+            Cancer Detection,” <em>Intl. Journal of Pharma Medicine &amp; Biological Sciences</em> (2025)
+          </li>
+          <li>
+            <strong>Oral presentation</strong>, ICBCB 2025 (IEEE co-sponsored, Seoul National University)
+          </li>
+          <li><strong>First Place</strong>, shsHacks (judged by Hudson River Trading)</li>
+          <li><strong>Illinois State Scholar</strong> (top 10%)</li>
+          <li>
+            Minor in the <strong>Hoeft Technology &amp; Management Program</strong> (Gies College of Business
+            and Grainger College of Engineering)
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+      <div>
+        <h2>Let’s talk</h2>
+        <p>Looking for Summer 2027 internships in software, embedded and data engineering.</p>
+      </div>
+      <ul class="contact-links">
+        <li><a href="mailto:rpras@illinois.edu">rpras@illinois.edu</a></li>
+        <li><a href="https://www.linkedin.com/in/ranya-prasad" rel="me">LinkedIn</a></li>
+        <li><a href="https://github.com/rainygold25" rel="me">GitHub</a></li>
+        <li><a href="https://github.com/rainygold25/personal-site">Source for this site</a></li>
+      </ul>
+      <p class="fine">
+        Built with Vite and TypeScript. Every change is tested in GitHub Actions before it deploys.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
