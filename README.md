@@ -89,8 +89,18 @@ One-time setup (already done for this repo):
 
 ## Pipeline evidence
 
-- Failed check and its fix: _link the failed PR run and the passing run here_
-- Main deployment: _link the deploy run here_
+All of this happened in [PR #1](https://github.com/rainygold25/personal-site/pull/1) (upgrading GitHub Actions to v5):
+
+1. **Failed check:** the first commit renamed the `s-supp` stat to `s-suppressed` in the page but not in the
+   Playwright test. **Browser and accessibility tests** failed
+   ([run 38495400212](https://github.com/rainygold25/personal-site/actions/runs/38495400212)) and the
+   ruleset blocked the merge.
+2. **Fix:** commit `0f960e9` updated the test selector; all four checks passed
+   ([run 38495583911](https://github.com/rainygold25/personal-site/actions/runs/38495583911)) and the PR
+   could merge.
+3. **Main deployment:** merging re-ran the checks on `main`, then deployed to production
+   ([run 38495700741](https://github.com/rainygold25/personal-site/actions/runs/38495700741)). The live
+   site served the renamed stat right after.
 
 ## Privacy
 
